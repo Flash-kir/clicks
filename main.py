@@ -7,8 +7,8 @@ from urllib.parse import urlparse
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-DEFAULT_GROUP_GUID = os.environ.get("DEFAULT_GROUP_GUID")
 GENERIC_ACCESS_TOKEN = os.environ.get("GENERIC_ACCESS_TOKEN")
+DEFAULT_GROUP_GUID = 'Bm9bkh4fu7j'
 
 def get_short_url(long_url, token):
     url = 'https://api-ssl.bitly.com/v4/shorten'
