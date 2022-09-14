@@ -4,46 +4,40 @@ from dotenv import load_dotenv
 
 def get_short_url(long_url, token):
     url = 'https://api-ssl.bitly.com/v4/shorten'
-    url_headers = {
-        'Authorization': token,
+    headers = {
+        'Authorization': f'Bearer {token}',
     }
-    url_params = {
+    body = {
         "long_url": long_url,
     }
     response = requests.post(
         url, 
-        headers=url_headers, 
-        json=url_params,
+        headers=headers, 
+        json=body,
     )
     response.raise_for_status()
     return response.json()['id']
     
 def get_clicks(shot_url, token):
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{shot_url}/clicks/summary'
-    url_headers = {
-        'Authorization': token,
+    headers = {
+        'Authorization': f'Bearer {token}',
     }
-    response = requests.get(url, headers=url_headers)
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
     return response.json()['total_clicks']
 
 def is_bitlink(bitlink, token):
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}'
-    url_headers = {
-        'Authorization': token,
+    headers = {
+        'Authorization': f'Bearer {token}',
     }
-    response = requests.get(url, headers=url_headers)
-    try:
-        response.raise_for_status()
-        return True
-    except requests.exceptions.HTTPError:
-        return False
+    response = requests.get(url, headers=headers)
+    return True if response.ok else False
     
 def main():
-    '''ya.ru = bit.ly/3Ue0Mdc'''
     load_dotenv()
-    bitly_token = 'Bearer %s' % os.environ.get("BITLY_GENERIC_ACCESS_TOKEN")
-    print(bitly_token)
+    bitly_token = os.environ.get("BITLY_GENERIC_ACCESS_TOKEN")
     user_url = input('Введите ссылку: ')
     if is_bitlink(user_url, bitly_token):
         try:
