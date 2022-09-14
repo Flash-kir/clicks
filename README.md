@@ -7,15 +7,16 @@
 
 Для установки компонентов выполните:
 
-> pip install -r requirenments.txt
+        pip install -r requirenments.txt
 
-Перед запуском необходимо зарегистрироваться на http://bit.ly, получить GENERIC_ACCESS_TOKEN и поместить его в папке проекта в файл .env
+Перед запуском необходимо зарегистрироваться на http://bit.ly, получить GENERIC_ACCESS_TOKEN и поместить его в файл .env в папке проекта.
+
 Для запуска:
 
-> python main.py
+        python main.py
 
 ## private variable
 
 В файле .env в папке проекта хранится токен:
 
-> GENERIC_ACCESS_TOKEN = 'Bearer {token}'
+        BITLY_GENERIC_ACCESS_TOKEN = 'token'
