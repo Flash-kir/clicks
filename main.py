@@ -17,7 +17,7 @@ def get_short_url(long_url, token):
     )
     response.raise_for_status()
     return response.json()['id']
-
+    
 def get_clicks(shot_url, token):
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{shot_url}/clicks/summary'
     url_headers = {
@@ -35,8 +35,7 @@ def is_bitlink(bitlink, token):
     response = requests.get(url, headers=url_headers)
     try:
         response.raise_for_status()
-        if response.ok:
-            return True
+        return True
     except requests.exceptions.HTTPError:
         return False
     
@@ -45,14 +44,17 @@ def main():
     load_dotenv()
     bitly_token = 'Bearer %s' % os.environ.get("BITLY_GENERIC_ACCESS_TOKEN")
     print(bitly_token)
-    '''    try:'''
     user_url = input('Введите ссылку: ')
     if is_bitlink(user_url, bitly_token):
-        print('Количество переходов по вашей ссылке: ', get_clicks(user_url, bitly_token))
+        try:
+            print('Количество переходов по вашей ссылке: ', get_clicks(user_url, bitly_token))
+        except requests.exceptions.HTTPError:
+            print('не удалось получить короткую ссылку')
     else:
-        print('Битлинк: ', get_short_url(user_url, bitly_token))
-    '''    except requests.exceptions.HTTPError:
-        print('ссылка введена не корректно или не найдена')'''
+        try:
+            print('Битлинк: ', get_short_url(user_url, bitly_token))
+        except requests.exceptions.HTTPError:
+            print('не удалось получить количество переходов по короткой ссылке')
 
 if __name__ == '__main__':
     main()
