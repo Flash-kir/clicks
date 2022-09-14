@@ -23,4 +23,4 @@
 
 В файле .env в папке проекта хранится токен:
 
-        BITLY_GENERIC_ACCESS_TOKEN = '{GENERIC_ACCESS_TOKEN}'
+        BITLY_GENERIC_ACCESS_TOKEN='{GENERIC_ACCESS_TOKEN}'
