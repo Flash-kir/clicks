@@ -25,8 +25,7 @@ def get_short_url(long_url, token):
 
 def get_clicks(shot_url, token):
     parse_url = urlparse(shot_url)
-    url_without_scheme = parse_url.netloc + parse_url.path
-    url = f'https://api-ssl.bitly.com/v4/bitlinks/{url_without_scheme}/clicks/summary'
+    url = f'https://api-ssl.bitly.com/v4/bitlinks/{parse_url.netloc}{parse_url.path}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}',
     }
@@ -37,8 +36,7 @@ def get_clicks(shot_url, token):
 
 def is_bitlink(bitlink, token):
     parse_url = urlparse(bitlink)
-    url_without_scheme = parse_url.netloc + parse_url.path
-    url = f'https://api-ssl.bitly.com/v4/bitlinks/{url_without_scheme}'
+    url = f'https://api-ssl.bitly.com/v4/bitlinks/{parse_url.netloc}{parse_url.path}'
     headers = {
         'Authorization': f'Bearer {token}',
     }
