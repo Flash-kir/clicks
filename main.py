@@ -1,7 +1,9 @@
-import requests
-import os
 import argparse
+import os
+
 from dotenv import load_dotenv
+from urllib.parse import urlparse
+import requests
 
 
 def get_short_url(long_url, token):
@@ -46,16 +48,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('url', help='url адрес')
     args = parser.parse_args()
-    if is_bitlink(args.url, bitly_token):
+    url_without_scheme = ''.join(urlparse(args.url)[1:3])
+    if is_bitlink(url_without_scheme, bitly_token):
         try:
-            print('Количество переходов по вашей ссылке: ', get_clicks(args.url, bitly_token))
+            print('Количество переходов по вашей ссылке: ', get_clicks(url_without_scheme, bitly_token))
         except requests.exceptions.HTTPError:
-            print('не удалось получить короткую ссылку')
+            print('не удалось получить количество переходов по короткой ссылке')
     else:
         try:
             print('Битлинк: ', get_short_url(args.url, bitly_token))
         except requests.exceptions.HTTPError:
-            print('не удалось получить количество переходов по короткой ссылке')
+            print('не удалось получить короткую ссылку')
 
 
 if __name__ == '__main__':
