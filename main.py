@@ -24,7 +24,9 @@ def get_short_url(long_url, token):
 
 
 def get_clicks(shot_url, token):
-    url = f'https://api-ssl.bitly.com/v4/bitlinks/{shot_url}/clicks/summary'
+    parse_url = urlparse(shot_url)
+    url_without_scheme = parse_url.netloc + parse_url.path
+    url = f'https://api-ssl.bitly.com/v4/bitlinks/{url_without_scheme}/clicks/summary'
     headers = {
         'Authorization': f'Bearer {token}',
     }
@@ -34,7 +36,9 @@ def get_clicks(shot_url, token):
 
 
 def is_bitlink(bitlink, token):
-    url = f'https://api-ssl.bitly.com/v4/bitlinks/{bitlink}'
+    parse_url = urlparse(bitlink)
+    url_without_scheme = parse_url.netloc + parse_url.path
+    url = f'https://api-ssl.bitly.com/v4/bitlinks/{url_without_scheme}'
     headers = {
         'Authorization': f'Bearer {token}',
     }
@@ -44,14 +48,13 @@ def is_bitlink(bitlink, token):
 
 def main():
     load_dotenv()
-    bitly_token = os.environ.get("BITLY_GENERIC_ACCESS_TOKEN")
+    bitly_token = os.environ.get("BITLY_TOKEN")
     parser = argparse.ArgumentParser()
     parser.add_argument('url', help='url адрес')
     args = parser.parse_args()
-    url_without_scheme = ''.join(urlparse(args.url)[1:3])
-    if is_bitlink(url_without_scheme, bitly_token):
+    if is_bitlink(args.url, bitly_token):
         try:
-            print('Количество переходов по вашей ссылке: ', get_clicks(url_without_scheme, bitly_token))
+            print('Количество переходов по вашей ссылке: ', get_clicks(args.url, bitly_token))
         except requests.exceptions.HTTPError:
             print('не удалось получить количество переходов по короткой ссылке')
     else:
