@@ -1,9 +1,9 @@
 import argparse
 import os
 
+import requests
 from dotenv import load_dotenv
 from urllib.parse import urlparse
-import requests
 
 
 def get_short_url(long_url, token):
